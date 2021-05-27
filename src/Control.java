@@ -19,9 +19,9 @@ public class Control
     {
         sRevison            = new Semaphore(1,true);     //Semaforo que permite la entrada o no de un Escritor
         sLectura            = new Semaphore(lecTotales,true);   //Semaforo que permite la entrada o no de un Lector
-        lectAdentro         = 0;    //Indica cuantos lectores tienen intención de leer actualmente el libro
-        lectoresLeyendo     = 0;    //Indica cuantos lectores ya están leyendo
-        escritAdentro       = 0;    //Indica cuantos escritores escriben y/o esperan (solo uno por vez podrá escribir)
+        lectAdentro         = 0;    //Indica cuantos lectores tienen intenciÃ³n de leer actualmente el libro
+        lectoresLeyendo     = 0;    //Indica cuantos lectores ya estÃ¡n leyendo
+        escritAdentro       = 0;    //Indica cuantos escritores escriben y/o esperan (solo uno por vez podrÃ¡ escribir)
         lockEscritores      = new ReentrantReadWriteLock();
         lockLectores        = new ReentrantReadWriteLock();
         lockLeyendo         = new ReentrantReadWriteLock();
@@ -37,19 +37,6 @@ public class Control
     public void permisoHacerRevision()
     {
         incrementarEscritores();
-        //try
-        {
-            //sRevison.acquire();
-            /*synchronized (lockPermEscritura)
-            {
-                sRevison.acquire();
-            }*/
-
-        }
-       /* catch (InterruptedException e)
-        {
-            e.printStackTrace();
-        }*/
     }
 
     /*Metodo usado por cada hilo lector para saber si puede avanzar
@@ -62,9 +49,9 @@ public class Control
         {
             incrementarLectores();  //INCREMENTO LA CANTIDAD DE LECTORES QUE SOLICITAN ENTRAR O ESTAN LEYENDO
 
-            /*MIENTRAS HAYA ESCRITORES, EL LECTOR QUE PUDO ENTRAR QUEDARÁ DORMIDO 10ms
+            /*MIENTRAS HAYA ESCRITORES, EL LECTOR QUE PUDO ENTRAR QUEDARÃ� DORMIDO 10ms
             * Y LUEGO VOLVERA A PREGUNTAR SI HAY ESCRITORES. CUANDO NO HAYA MAS,
-            * PODRÁ AVANZAR*/
+            * PODRÃ� AVANZAR*/
             while (getEscritoresAdentro() != 0)
             {
                 try {
@@ -88,7 +75,7 @@ public class Control
         decrementarLectores();
         decLectoresLeyendo();
 
-        /*SOLO SI NO HAY MAS LECTORES LEYENDO Y EL LOCK NO ESTÁ
+        /*SOLO SI NO HAY MAS LECTORES LEYENDO Y EL LOCK NO ESTÃ�
          * LIBERADO, SE LO LIBERA PARA QUE EL ESCRITOR PUEDA SEGUIR*/
     }
 
@@ -96,13 +83,6 @@ public class Control
     public void terminarRevision()
     {
         decrementarEscritores();
-
-
-        //sRevison.release();
-        /*synchronized (lockPermEscritura)
-        {
-            sRevison.release();
-        }*/
     }
 
     public int getLectoresAdentro()
@@ -130,10 +110,8 @@ public class Control
     public void incrementarEscritores()
     {
         /*INICIO SECCION CRITICA*/
-        lockEscritores.writeLock().lock();
-        //System.out.println(Thread.currentThread().getName() + ": Por incrementar escritores adentro. Actual: " + escritAdentro + " (" + nombreLibro + ")'");
-            escritAdentro++;
-        //System.out.println(Thread.currentThread().getName() + ": Incrementado: escritores adentro. Ahora: " + escritAdentro + " (" + nombreLibro + ")'");
+        lockEscritores.writeLock().lock();       
+        escritAdentro++;
         lockEscritores.writeLock().unlock();
         /*FIN SECCCION CRITICA*/
     }
@@ -141,11 +119,7 @@ public class Control
 
     public void incrementarLectores()
     {
-        /*INICIO SECCION CRITICA*/
-        //lockLectores.writeLock().lock();
             lectAdentro++;
-        //lockLectores.writeLock().unlock();
-        /*FIN SECCION CRITICA*/
     }
 
     public void incLectoresLeyendo()
@@ -180,10 +154,8 @@ public class Control
     public void decrementarEscritores()
     {
         /*INICIO SECCION CRITICA*/
-        lockEscritores.writeLock().lock();
-        //System.out.println(Thread.currentThread().getName() + ": POR DECREMENTAR escritAdentro: " + escritAdentro);
+        lockEscritores.writeLock().lock();   
         escritAdentro--;
-        //System.out.println(Thread.currentThread().getName() + ": DECREMENTADO escritAdentro: " + escritAdentro);
         lockEscritores.writeLock().unlock();
         /*FIN SECCCION CRITICA*/
     }

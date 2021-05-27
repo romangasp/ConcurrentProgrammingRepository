@@ -95,7 +95,6 @@ public class SimpleLog implements Runnable{
         return lecturas;
     }
 
-    @Override
     public void run() {
         this.write("----------INICIO---------");
         while (!getFinishMain()) {

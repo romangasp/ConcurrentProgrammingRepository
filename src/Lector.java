@@ -12,11 +12,9 @@ public class Lector implements Runnable
         trabajoTerminado    = false;
         resetLecturaTerminada();
     }
-    @Override
+
     public void run()
     {
-        //libro.hacerAlgo(Thread.currentThread().getName());
-
         /*PRUEBAS*/
         while (!trabajoTerminado)
         {

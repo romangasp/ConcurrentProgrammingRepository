@@ -1,7 +1,7 @@
 public class Revisor implements Runnable
 {
     Libro[] libros;
-    //Libro[] librosSinREvisar;
+
     boolean[] librosRevisados;
 
 
@@ -13,13 +13,11 @@ public class Revisor implements Runnable
     }
 
 
-    @Override
     public void run()
     {
-        //System.out.println("Libros sin revisar: " + cantLibrosSinRevisar);
+
         while (getCantLibrosSinRevisar() > 0)
         {
-            //System.out.println("Libros sin revisar: " + getCantLibrosSinRevisar());
             Libro l = getLibroRandom();
             l.hacerRevision();
             librosRevisados[l.getId()] = true;
